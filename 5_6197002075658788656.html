@@ -1,0 +1,1605 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <title>SPR STORE – SPR SELLS WEBSITE</title>
+  <meta name="description" content="DEV STORE XA – Premium Code Store. Buy ready-to-use app source codes, gaming apps, tournament apps, and custom solutions.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
+
+  <style>
+    /* ─── DESIGN TOKENS ─── */
+    :root {
+      --bg: #ffffff;
+      --fg: #020817;
+      --primary: #0f172a;
+      --primary-fg: #f8fafc;
+      --surface: #ffffff;
+      --muted: #f1f5f9;
+      --muted-fg: #64748b;
+      --border: #e2e8f0;
+      --success: #16a34a;
+      --success-fg: #f8fafc;
+      --warning: #ca8a04;
+      --warning-bg: #fef9c3;
+      --accent: #f1f5f9;
+      --accent-fg: #0f172a;
+      --radius: 1.5rem;
+      --radius-sm: 0.75rem;
+      --radius-lg: 2rem;
+      --font-display: 'Instrument Serif', Georgia, serif;
+      --font-body: 'Inter', system-ui, sans-serif;
+    }
+    .dark {
+      --bg: #020817;
+      --fg: #f8fafc;
+      --primary: #f8fafc;
+      --primary-fg: #0f172a;
+      --surface: #020817;
+      --muted: #1e293b;
+      --muted-fg: #94a3b8;
+      --border: #1e293b;
+      --accent: #1e293b;
+      --accent-fg: #f8fafc;
+    }
+
+    /* ─── RESET & BASE ─── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--fg);
+      min-height: 100dvh;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      padding-bottom: 5rem;
+    }
+    button, [role="button"] { cursor: pointer; border: none; background: none; font: inherit; }
+    img, svg { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+
+    /* ─── LAYOUT ─── */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes blur-in {
+      from { opacity: 0; filter: blur(10px); transform: translateY(20px); }
+      to   { opacity: 1; filter: blur(0);    transform: translateY(0); }
+    }
+    @keyframes float-slow {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50%       { transform: translateY(-12px) rotate(2deg); }
+    }
+    @keyframes glow-pulse {
+      0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--primary) 40%, transparent); }
+      50%       { box-shadow: 0 0 0 14px transparent; }
+    }
+    @keyframes ticker-scroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    @keyframes fade-in {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    @keyframes shimmer {
+      from { transform: translateX(-120%); }
+      to   { transform: translateX(120%); }
+    }
+
+    .anim-blur-in  { animation: blur-in .8s ease-out both; }
+    .anim-float    { animation: float-slow 6s ease-in-out infinite; }
+    .anim-glow     { animation: glow-pulse 2.5s ease-in-out infinite; }
+
+    /* ─── TICKER ─── */
+    .ticker-wrap {
+      overflow: hidden;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .ticker-inner {
+      display: flex;
+      white-space: nowrap;
+      animation: ticker-scroll 18s linear infinite;
+      width: max-content;
+    }
+    .ticker-inner span {
+      font-size: 9px;
+      font-weight: 900;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--muted-fg);
+      padding: 0.55rem 0;
+      display: inline-block;
+    }
+    .ticker-inner span.accent {
+      color: var(--primary);
+    }
+
+    /* ─── NAV BAR ─── */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.5rem;
+      gap: 0.5rem;
+    }
+    .topbar-logo {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-style: italic;
+      font-weight: 400;
+      letter-spacing: -0.03em;
+      color: var(--fg);
+      flex: 1;
+    }
+    .topbar-actions { display: flex; gap: 0.75rem; align-items: center; }
+    .icon-btn {
+      width: 2.8rem; height: 2.8rem;
+      border-radius: 9999px;
+      background: var(--muted);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--fg);
+      font-size: 0.95rem;
+      transition: background .15s;
+      cursor: pointer;
+    }
+    .icon-btn:hover { background: var(--border); }
+
+    /* ─── HERO SECTION ─── */
+    .hero {
+      text-align: center;
+      padding: 4rem 1.5rem 3rem;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: var(--muted);
+      color: var(--muted-fg);
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      padding: 0.5rem 1.2rem;
+      border-radius: 9999px;
+      margin-bottom: 1.5rem;
+    }
+    .hero-title {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: clamp(2.8rem, 8vw, 4.5rem);
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+      color: var(--fg);
+      margin-bottom: 0.5rem;
+    }
+    .hero-subtitle {
+      font-size: clamp(10px, 3vw, 12px);
+      font-weight: 900;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--muted-fg);
+      margin-bottom: 2.5rem;
+      font-style: italic;
+    }
+    .hero-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 1.2rem 2.5rem;
+      border-radius: var(--radius);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      transition: all .2s;
+      box-shadow: 0 8px 30px -8px rgba(0,0,0,.25);
+      cursor: pointer;
+    }
+    .hero-btn-primary {
+      background: var(--primary);
+      color: var(--primary-fg);
+      border: 2px solid var(--primary);
+    }
+    .hero-btn-primary:hover { opacity: .9; transform: translateY(-2px); }
+    .hero-btn-primary:active { transform: scale(.97); }
+
+    /* ─── SEARCH / FILTER ─── */
+    .search-wrap {
+      padding: 0 1.5rem 1.5rem;
+      display: flex;
+      gap: 0.75rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .search-box {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: var(--muted);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.85rem 1.25rem;
+      color: var(--muted-fg);
+      font-size: 0.95rem;
+    }
+    .search-box input {
+      flex: 1;
+      background: none;
+      border: none;
+      outline: none;
+      color: var(--fg);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+    }
+    .search-box input::placeholder { color: var(--muted-fg); }
+    .filter-btn {
+      width: 3.5rem; height: 3.5rem;
+      border-radius: var(--radius-sm);
+      background: var(--primary);
+      color: var(--primary-fg);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* ─── CATEGORY CHIPS ─── */
+    .chips-wrap {
+      display: flex;
+      gap: 0.75rem;
+      padding: 0 1.5rem 2rem;
+      overflow-x: auto;
+      scrollbar-width: none;
+      justify-content: flex-start;
+    }
+    @media (min-width: 768px) {
+      .chips-wrap { justify-content: center; flex-wrap: wrap; }
+    }
+    .chips-wrap::-webkit-scrollbar { display: none; }
+    .chip {
+      flex-shrink: 0;
+      padding: 0.5rem 1rem;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      border: 1.5px solid var(--border);
+      color: var(--muted-fg);
+      background: var(--surface);
+      cursor: pointer;
+      transition: all .15s;
+    }
+    .chip:hover, .chip.active {
+      background: var(--primary);
+      color: var(--primary-fg);
+      border-color: var(--primary);
+    }
+
+    /* ─── PRODUCT GRID ─── */
+    .product-grid {
+      padding: 0 1.5rem 2.5rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    @media (max-width: 400px) {
+      .product-grid { grid-template-columns: 1fr; }
+    }
+
+    .product-card {
+      border-radius: var(--radius);
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      overflow: hidden;
+      box-shadow: 0 4px 20px -6px rgba(0,0,0,.08);
+      cursor: pointer;
+      transition: all .3s;
+      display: flex;
+      flex-direction: column;
+    }
+    .product-card:hover {
+      transform: translateY(-5px) scale(1.01);
+      box-shadow: 0 12px 30px -10px rgba(0,0,0,.2);
+    }
+    .product-card:active { transform: scale(.98); }
+
+    .card-img-wrap {
+      position: relative;
+      background: linear-gradient(135deg, var(--muted) 0%, var(--accent) 100%);
+      aspect-ratio: 4/3;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .card-img-wrap .phone-frame {
+      width: 35%;
+      min-width: 120px;
+      aspect-ratio: 9/18;
+      background: var(--bg);
+      border-radius: 12px;
+      border: 3px solid var(--border);
+      box-shadow: 0 8px 20px -4px rgba(0,0,0,.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+    .card-img-wrap .phone-frame::before {
+      content: '';
+      position: absolute;
+      top: 6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 30%;
+      height: 4px;
+      background: var(--border);
+      border-radius: 9999px;
+    }
+    .card-img-wrap .phone-inner {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+    }
+
+    .card-badges {
+      position: absolute;
+      top: 0.75rem;
+      left: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 9px;
+      font-weight: 900;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.35rem 0.6rem;
+      border-radius: 9999px;
+      backdrop-filter: blur(8px);
+    }
+    .badge-code { background: rgba(255,255,255,.92); color: var(--fg); }
+    .badge-live { background: var(--success); color: white; }
+    .badge-live .dot {
+      width: 6px; height: 6px;
+      background: white;
+      border-radius: 50%;
+      animation: fade-in 1s ease-in-out infinite alternate;
+    }
+
+    .card-discount {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      background: var(--primary);
+      color: var(--primary-fg);
+      font-size: 10px;
+      font-weight: 900;
+      padding: 0.35rem 0.6rem;
+      border-radius: 9999px;
+      animation: glow-pulse 2.5s ease-in-out infinite;
+    }
+
+    .card-body {
+      padding: 1.25rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .card-tag {
+      font-size: 9px;
+      font-weight: 900;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted-fg);
+    }
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      line-height: 1.3;
+      color: var(--fg);
+    }
+    .card-price-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: auto;
+      padding-top: 0.5rem;
+    }
+    .card-price {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 1.3rem;
+      font-weight: 900;
+      color: var(--fg);
+    }
+    .card-price-original {
+      font-size: 0.8rem;
+      color: var(--muted-fg);
+      text-decoration: line-through;
+    }
+    .card-buy-btn {
+      margin-left: auto;
+      background: var(--primary);
+      color: var(--primary-fg);
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.5rem 1rem;
+      border-radius: 9999px;
+    }
+
+    /* ─── STATS BAR ─── */
+    .stats-bar {
+      margin: 0 auto 3rem;
+      background: color-mix(in srgb, var(--surface) 60%, transparent);
+      backdrop-filter: blur(12px);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      box-shadow: 0 4px 20px -8px rgba(0,0,0,.12);
+    }
+    @media (min-width: 768px) {
+      .stats-bar { grid-template-columns: repeat(4, 1fr); gap: 0; padding: 2rem; }
+    }
+    .stat-item { text-align: center; }
+    .stat-value {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      font-weight: 700;
+      color: var(--fg);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 10px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted-fg);
+      margin-top: 0.5rem;
+    }
+
+    /* ─── SECTION WRAPPER ─── */
+    .section {
+      padding: 0 1.5rem 5rem;
+    }
+    .section-eyebrow {
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.4em;
+      color: var(--muted-fg);
+      text-align: center;
+      margin-bottom: 0.75rem;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: clamp(2.2rem, 5vw, 3rem);
+      line-height: 1.1;
+      color: var(--fg);
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    .section-title em { color: var(--primary); font-style: inherit; }
+    .section-title u {
+      text-decoration: underline wavy;
+      text-decoration-color: color-mix(in srgb, var(--primary) 40%, transparent);
+      text-underline-offset: 4px;
+    }
+    .section-subtitle {
+      font-size: 0.95rem;
+      text-align: center;
+      color: var(--muted-fg);
+      font-style: italic;
+      margin-bottom: 3rem;
+    }
+
+    /* ─── FEATURE CARDS ─── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+    @media (min-width: 600px) {
+      .features-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (min-width: 1024px) {
+      .features-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+    .feature-card {
+      background: color-mix(in srgb, var(--surface) 70%, transparent);
+      backdrop-filter: blur(12px);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      box-shadow: 0 4px 20px -8px rgba(0,0,0,.1);
+      transition: all .3s;
+    }
+    .feature-card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 12px 30px -10px rgba(0,0,0,.2);
+    }
+    .feature-icon {
+      width: 3rem; height: 3rem;
+      border-radius: 0.75rem;
+      background: var(--primary);
+      color: var(--primary-fg);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+    .feature-title {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 1.3rem;
+      color: var(--fg);
+      margin-bottom: 0.5rem;
+      line-height: 1.2;
+    }
+    .feature-desc {
+      font-size: 0.85rem;
+      color: var(--muted-fg);
+      line-height: 1.6;
+    }
+
+    /* ─── WHO IS THIS FOR ─── */
+    .audience-list { 
+      display: grid; 
+      grid-template-columns: 1fr; 
+      gap: 1.25rem; 
+    }
+    @media (min-width: 768px) {
+      .audience-list { grid-template-columns: repeat(2, 1fr); }
+    }
+    .audience-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.25rem;
+      background: color-mix(in srgb, var(--surface) 70%, transparent);
+      backdrop-filter: blur(12px);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      box-shadow: 0 2px 12px -4px rgba(0,0,0,.08);
+    }
+    .audience-icon {
+      width: 3.5rem; height: 3.5rem;
+      flex-shrink: 0;
+      border-radius: 0.75rem;
+      background: var(--accent);
+      color: var(--accent-fg);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+    }
+    .audience-title {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 1.5rem;
+      color: var(--fg);
+      line-height: 1.2;
+      margin-bottom: 0.35rem;
+    }
+    .audience-desc {
+      font-size: 0.85rem;
+      color: var(--muted-fg);
+      line-height: 1.6;
+    }
+
+    /* ─── UPSIDE BANNER ─── */
+    .upside-banner {
+      border-radius: 2rem;
+      background: var(--primary);
+      color: var(--primary-fg);
+      padding: 2rem;
+      box-shadow: 0 20px 50px -15px rgba(0,0,0,.4);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    @media (min-width: 768px) {
+      .upside-banner { padding: 4rem; text-align: center; align-items: center; }
+    }
+    .upside-banner::before {
+      content: '';
+      position: absolute;
+      top: -3rem; right: -3rem;
+      width: 15rem; height: 15rem;
+      border-radius: 50%;
+      background: rgba(255,255,255,.08);
+    }
+    .upside-eyebrow {
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      opacity: .7;
+      margin-bottom: 1rem;
+    }
+    .upside-title {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: clamp(2rem, 5vw, 3rem);
+      line-height: 1.15;
+      margin-bottom: 1.25rem;
+    }
+    .upside-title u { text-decoration: underline wavy; text-underline-offset: 4px; }
+    .upside-desc {
+      font-size: 0.9rem;
+      opacity: .88;
+      line-height: 1.65;
+      margin-bottom: 1.5rem;
+      max-width: 700px;
+    }
+    .upside-tags { display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; }
+    .upside-tag {
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: rgba(255,255,255,.15);
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255,255,255,.2);
+      padding: 0.5rem 1rem;
+      border-radius: 9999px;
+    }
+
+    /* ─── PRICING ─── */
+    .pricing-list { 
+      display: grid; 
+      grid-template-columns: 1fr; 
+      gap: 1.5rem; 
+      align-items: center;
+    }
+    @media (min-width: 992px) {
+      .pricing-list { grid-template-columns: repeat(3, 1fr); }
+    }
+    .pricing-card {
+      position: relative;
+      border-radius: 2rem;
+      padding: 2rem;
+      border: 2px solid var(--border);
+      background: var(--surface);
+      box-shadow: 0 8px 24px -8px rgba(0,0,0,.1);
+      transition: all .3s;
+    }
+    .pricing-card:hover { transform: translateY(-5px); }
+    .pricing-card.highlight {
+      background: var(--primary);
+      color: var(--primary-fg);
+      border-color: var(--primary);
+    }
+    @media (min-width: 992px) {
+      .pricing-card.highlight { transform: scale(1.05); }
+      .pricing-card.highlight:hover { transform: scale(1.05) translateY(-5px); }
+    }
+    .pricing-card.highlight .plan-tag { color: rgba(255,255,255,.7); }
+    .pricing-card.highlight .plan-feature { color: rgba(255,255,255,.88); }
+    .pricing-card.highlight .plan-check { color: rgba(255,255,255,.9); }
+    .plan-popular-badge {
+      position: absolute;
+      top: -1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--warning);
+      color: #000;
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.4rem 1.25rem;
+      border-radius: 9999px;
+      white-space: nowrap;
+      box-shadow: 0 4px 12px rgba(0,0,0,.15);
+    }
+    .plan-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
+    .plan-name {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 2.5rem;
+      line-height: 1;
+    }
+    .plan-price {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 1.8rem;
+      font-weight: 900;
+    }
+    .plan-tag {
+      font-size: 0.85rem;
+      color: var(--muted-fg);
+      margin-bottom: 1.5rem;
+    }
+    .plan-features { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 2rem; }
+    .plan-feature {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.9rem;
+      color: var(--fg);
+    }
+    .plan-check { color: var(--success); font-size: 0.85rem; }
+    .plan-cta {
+      width: 100%;
+      padding: 1.2rem;
+      border-radius: var(--radius-sm);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      text-align: center;
+      transition: all .2s;
+      cursor: pointer;
+      display: block;
+    }
+    .plan-cta-light {
+      background: var(--primary);
+      color: var(--primary-fg);
+    }
+    .plan-cta-dark {
+      background: rgba(255,255,255,.15);
+      color: var(--primary-fg);
+      border: 1.5px solid rgba(255,255,255,.25);
+    }
+    .plan-cta:hover { opacity: .88; }
+
+    /* ─── TESTIMONIALS ─── */
+    .testimonials-list { 
+      display: grid; 
+      grid-template-columns: 1fr; 
+      gap: 1.25rem; 
+    }
+    @media (min-width: 768px) {
+      .testimonials-list { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+    }
+    .testimonial-card {
+      background: color-mix(in srgb, var(--surface) 70%, transparent);
+      backdrop-filter: blur(12px);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      box-shadow: 0 4px 16px -6px rgba(0,0,0,.1);
+    }
+    .stars { display: flex; gap: 4px; margin-bottom: 0.75rem; }
+    .stars i { color: var(--warning); font-size: 0.85rem; }
+    .testimonial-text {
+      font-size: 0.95rem;
+      color: var(--fg);
+      line-height: 1.6;
+      margin-bottom: 1.25rem;
+    }
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .author-avatar {
+      width: 2.75rem; height: 2.75rem;
+      border-radius: 50%;
+      background: var(--primary);
+      color: var(--primary-fg);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem;
+      font-weight: 900;
+      flex-shrink: 0;
+    }
+    .author-name {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--fg);
+    }
+    .author-role {
+      font-size: 11px;
+      color: var(--muted-fg);
+    }
+
+    /* ─── FAQ ─── */
+    .faq-list { 
+      display: flex; 
+      flex-direction: column; 
+      gap: 1rem; 
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .faq-item {
+      background: color-mix(in srgb, var(--surface) 70%, transparent);
+      backdrop-filter: blur(12px);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 2px 10px -4px rgba(0,0,0,.08);
+    }
+    .faq-trigger {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1.5rem;
+      text-align: left;
+      cursor: pointer;
+      background: none;
+      border: none;
+      color: var(--fg);
+    }
+    .faq-question {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 1.2rem;
+      color: var(--fg);
+      line-height: 1.35;
+      flex: 1;
+    }
+    .faq-icon {
+      width: 2.25rem; height: 2.25rem;
+      flex-shrink: 0;
+      border-radius: 50%;
+      background: var(--primary);
+      color: var(--primary-fg);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem;
+      transition: transform .3s;
+    }
+    .faq-item.open .faq-icon { transform: rotate(45deg); }
+    .faq-body {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows .3s ease-out, opacity .3s;
+      opacity: 0;
+    }
+    .faq-item.open .faq-body {
+      grid-template-rows: 1fr;
+      opacity: 1;
+    }
+    .faq-body-inner { overflow: hidden; }
+    .faq-answer {
+      padding: 0 1.5rem 1.5rem;
+      font-size: 0.95rem;
+      color: var(--muted-fg);
+      line-height: 1.7;
+    }
+
+    /* ─── FLOATING BUTTON ─── */
+    .fab-wrap {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.75rem;
+    }
+    @media (max-width: 767px) {
+      .fab-wrap { bottom: 1.5rem; right: 1rem; }
+    }
+    .fab-label {
+      background: var(--primary);
+      color: var(--primary-fg);
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.5rem 1rem;
+      border-radius: 9999px;
+      box-shadow: 0 4px 16px rgba(0,0,0,.25);
+      white-space: nowrap;
+    }
+    .fab {
+      width: 4rem; height: 4rem;
+      border-radius: 9999px;
+      background: #25D366;
+      color: white;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem;
+      box-shadow: 0 8px 24px rgba(37,211,102,.45);
+      transition: all .2s;
+      cursor: pointer;
+    }
+    .fab:hover { transform: scale(1.1); }
+    .fab:active { transform: scale(.95); }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--primary);
+      color: var(--primary-fg);
+      padding: 4rem 1.5rem 3rem;
+      text-align: center;
+    }
+    .footer-logo {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .footer-sub {
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      opacity: .6;
+      margin-bottom: 2rem;
+    }
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem 2rem;
+      margin-bottom: 2.5rem;
+    }
+    .footer-links a {
+      font-size: 0.85rem;
+      font-weight: 700;
+      opacity: .7;
+      transition: opacity .15s;
+    }
+    .footer-links a:hover { opacity: 1; }
+    .footer-socials {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+    .social-btn {
+      width: 3rem; height: 3rem;
+      border-radius: 50%;
+      background: rgba(255,255,255,.12);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      transition: background .15s;
+      cursor: pointer;
+    }
+    .social-btn:hover { background: rgba(255,255,255,.22); }
+    .footer-copy {
+      font-size: 11px;
+      opacity: .45;
+    }
+
+    /* ─── DARK MODE TRANSITION ─── */
+    body, .product-card, .feature-card, .audience-card, .testimonial-card, .faq-item, .stats-bar {
+      transition: background-color .3s, border-color .3s, color .3s;
+    }
+
+    /* ─── SKELETON SHIMMER ─── */
+    .skeleton {
+      background: var(--muted);
+      border-radius: var(--radius-sm);
+      position: relative;
+      overflow: hidden;
+    }
+    .skeleton::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.12), transparent);
+      animation: shimmer 1.4s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="ticker-wrap">
+    <div class="ticker-inner" aria-hidden="true">
+      <span>SPR STORE&nbsp;•&nbsp;</span>
+      <span class="accent">SOURCE CODE&nbsp;•&nbsp;</span>
+      <span>SPR STORE&nbsp;•&nbsp;</span>
+      <span class="accent">PREMIUM APPS&nbsp;•&nbsp;</span>
+      <span>SPR STORE&nbsp;•&nbsp;</span>
+      <span class="accent">SOURCE CODE&nbsp;•&nbsp;</span>
+      <span>SPR STORE&nbsp;•&nbsp;</span>
+      <span class="accent">PREMIUM APPS&nbsp;•&nbsp;</span>
+      <span>SPR STORE&nbsp;•&nbsp;</span>
+      <span class="accent">SOURCE CODE&nbsp;•&nbsp;</span>
+      <span>SPR STORE&nbsp;•&nbsp;</span>
+      <span class="accent">PREMIUM APPS&nbsp;•&nbsp;</span>
+      <span>SPR STORE&nbsp;•&nbsp;</span>
+      <span class="accent">SOURCE CODE&nbsp;•&nbsp;</span>
+      <span>SPR STORE&nbsp;•&nbsp;</span>
+      <span class="accent">PREMIUM APPS&nbsp;•&nbsp;</span>
+    </div>
+  </div>
+
+  <header class="container">
+    <div class="topbar">
+      <div class="topbar-logo">SPR STORE APP</div>
+      <div class="topbar-actions">
+        <button class="icon-btn" id="theme-toggle" title="Toggle theme" aria-label="Toggle dark mode">
+          <i class="fa-solid fa-moon" id="theme-icon"></i>
+        </button>
+        <button class="icon-btn" title="Your purchases" aria-label="View purchases">
+          <i class="fa-solid fa-bag-shopping"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero anim-blur-in container" style="animation-delay:.05s">
+    <div class="hero-badge">
+      <i class="fa-solid fa-bolt"></i>
+      Premium STORE App
+    </div>
+    <h1 class="hero-title">SPR STORE APP</h1>
+    <p class="hero-subtitle">Premium STORE App</p>
+    <button class="hero-btn hero-btn-primary anim-glow">
+      <i class="fa-solid fa-sparkles"></i>
+      Browse Products
+    </button>
+  </section>
+
+  <div class="search-wrap anim-blur-in" style="animation-delay:.12s">
+    <label class="search-box" for="search-input">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input id="search-input" type="text" placeholder="Search source code…" aria-label="Search products">
+    </label>
+    <button class="filter-btn" aria-label="Filter products">
+      <i class="fa-solid fa-sliders"></i>
+    </button>
+  </div>
+
+  <div class="chips-wrap container anim-blur-in" style="animation-delay:.16s" role="group" aria-label="Filter by category">
+    <button class="chip active" onclick="filterChip(this)">All</button>
+    <button class="chip" onclick="filterChip(this)">Gaming</button>
+    <button class="chip" onclick="filterChip(this)">E-Commerce</button>
+    <button class="chip" onclick="filterChip(this)">Finance</button>
+    <button class="chip" onclick="filterChip(this)">Social</button>
+    <button class="chip" onclick="filterChip(this)">Dashboard</button>
+    <button class="chip" onclick="filterChip(this)">Utility</button>
+  </div>
+
+  <main class="product-grid container anim-blur-in" style="animation-delay:.2s" aria-label="Products">
+
+    <article class="product-card" style="animation-delay:.0s">
+      <div class="card-img-wrap" style="background:linear-gradient(135deg,#dbeafe,#eff6ff)">
+        <div class="phone-frame">
+          <div class="phone-inner" style="background:linear-gradient(180deg,#1e40af,#3b82f6);color:white;font-size:.9rem">🏆</div>
+        </div>
+        <div class="card-badges">
+          <span class="badge badge-code"><i class="fa-solid fa-code"></i>  Code</span>
+          <span class="badge badge-live"><span class="dot"></span> Live Demo</span>
+        </div>
+        <span class="card-discount">-30%</span>
+      </div>
+      <div class="card-body">
+        <span class="card-tag">Gaming • Android</span>
+        <h2 class="card-title">Tournament Bracket App</h2>
+        <div class="card-price-row">
+          <span class="card-price">₹1,499</span>
+          <span class="card-price-original">₹2,099</span>
+          <button class="card-buy-btn" aria-label="Buy Tournament Bracket App">Buy</button>
+        </div>
+      </div>
+    </article>
+
+    <article class="product-card" style="animation-delay:.05s">
+      <div class="card-img-wrap" style="background:linear-gradient(135deg,#f0fdf4,#dcfce7)">
+        <div class="phone-frame">
+          <div class="phone-inner" style="background:linear-gradient(180deg,#166534,#22c55e);color:white;font-size:.9rem">🛒</div>
+        </div>
+        <div class="card-badges">
+          <span class="badge badge-code"><i class="fa-solid fa-code"></i> Simple Code</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <span class="card-tag">E-Commerce • Firebase</span>
+        <h2 class="card-title">Full-Stack E-Commerce App</h2>
+        <div class="card-price-row">
+          <span class="card-price">₹2,999</span>
+          <button class="card-buy-btn">Buy</button>
+        </div>
+      </div>
+    </article>
+
+    <article class="product-card" style="animation-delay:.1s">
+      <div class="card-img-wrap" style="background:linear-gradient(135deg,#fff7ed,#ffedd5)">
+        <div class="phone-frame">
+          <div class="phone-inner" style="background:linear-gradient(180deg,#9a3412,#f97316);color:white;font-size:.9rem">💰</div>
+        </div>
+        <div class="card-badges">
+          <span class="badge badge-code"><i class="fa-solid fa-code"></i> Simple Code</span>
+          <span class="badge badge-live"><span class="dot"></span> Live Demo</span>
+        </div>
+        <span class="card-discount">-20%</span>
+      </div>
+      <div class="card-body">
+        <span class="card-tag">Finance • UPI</span>
+        <h2 class="card-title">Digital Wallet App</h2>
+        <div class="card-price-row">
+          <span class="card-price">₹999</span>
+          <span class="card-price-original">₹1,249</span>
+          <button class="card-buy-btn">Buy</button>
+        </div>
+      </div>
+    </article>
+
+    <article class="product-card" style="animation-delay:.15s">
+      <div class="card-img-wrap" style="background:linear-gradient(135deg,#fdf4ff,#fae8ff)">
+        <div class="phone-frame">
+          <div class="phone-inner" style="background:linear-gradient(180deg,#581c87,#a855f7);color:white;font-size:.9rem">🎮</div>
+        </div>
+        <div class="card-badges">
+          <span class="badge badge-code"><i class="fa-solid fa-code"></i> Simple Code</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <span class="card-tag">Gaming • Real-time</span>
+        <h2 class="card-title">Gaming Leaderboard System</h2>
+        <div class="card-price-row">
+          <span class="card-price">₹799</span>
+          <button class="card-buy-btn">Buy</button>
+        </div>
+      </div>
+    </article>
+
+    <article class="product-card" style="animation-delay:.2s">
+      <div class="card-img-wrap" style="background:linear-gradient(135deg,#ecfeff,#cffafe)">
+        <div class="phone-frame">
+          <div class="phone-inner" style="background:linear-gradient(180deg,#164e63,#06b6d4);color:white;font-size:.9rem">💬</div>
+        </div>
+        <div class="card-badges">
+          <span class="badge badge-code"><i class="fa-solid fa-code"></i> Source Code</span>
+          <span class="badge badge-live"><span class="dot"></span> Live Demo</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <span class="card-tag">Social • Flutter</span>
+        <h2 class="card-title">Live Chat App</h2>
+        <div class="card-price-row">
+          <span class="card-price">₹1,299</span>
+          <button class="card-buy-btn">Buy</button>
+        </div>
+      </div>
+    </article>
+
+    <article class="product-card" style="animation-delay:.25s">
+      <div class="card-img-wrap" style="background:linear-gradient(135deg,#fef2f2,#fee2e2)">
+        <div class="phone-frame">
+          <div class="phone-inner" style="background:linear-gradient(180deg,#7f1d1d,#ef4444);color:white;font-size:.9rem">📊</div>
+        </div>
+        <div class="card-badges">
+          <span class="badge badge-code"><i class="fa-solid fa-code"></i> Source Code</span>
+        </div>
+        <span class="card-discount">-15%</span>
+      </div>
+      <div class="card-body">
+        <span class="card-tag">Dashboard • React</span>
+        <h2 class="card-title">Admin Dashboard Pro</h2>
+        <div class="card-price-row">
+          <span class="card-price">₹3,499</span>
+          <span class="card-price-original">₹4,099</span>
+          <button class="card-buy-btn">Buy</button>
+        </div>
+      </div>
+    </article>
+
+  </main>
+
+  <div class="stats-bar container anim-blur-in" style="animation-delay:.25s" aria-label="Store statistics">
+    <div class="stat-item">
+      <div class="stat-value">12K+</div>
+      <div class="stat-label">Happy Devs</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">450+</div>
+      <div class="stat-label">Premium Codes</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">4.9★</div>
+      <div class="stat-label">Avg Rating</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">2 min</div>
+      <div class="stat-label">Avg Delivery</div>
+    </div>
+  </div>
+
+  <section class="section container" aria-labelledby="features-heading">
+    <p class="section-eyebrow">Why Developers Choose Us</p>
+    <h2 class="section-title" id="features-heading">
+      Built for <em>builders</em>,<br>priced for <u>profit</u>.
+    </h2>
+
+    <div class="features-grid">
+      <div class="feature-card anim-blur-in" style="animation-delay:.0s">
+        <div class="feature-icon anim-float">
+          <i class="fa-solid fa-bolt"></i>
+        </div>
+        <h3 class="feature-title">Instant Delivery</h3>
+        <p class="feature-desc">Source code delivered to your dashboard within 2 minutes of payment.</p>
+      </div>
+      <div class="feature-card anim-blur-in" style="animation-delay:.1s">
+        <div class="feature-icon anim-float" style="animation-delay:.5s">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        <h3 class="feature-title">Production-Ready</h3>
+        <p class="feature-desc">Clean, documented, malware-free code audited by senior engineers.</p>
+      </div>
+      <div class="feature-card anim-blur-in" style="animation-delay:.2s">
+        <div class="feature-icon anim-float" style="animation-delay:1s">
+          <i class="fa-solid fa-headset"></i>
+        </div>
+        <h3 class="feature-title">Real Human Support</h3>
+        <p class="feature-desc">Stuck on setup? Our team replies on Telegram within 5 minutes, 24/7.</p>
+      </div>
+      <div class="feature-card anim-blur-in" style="animation-delay:.3s">
+        <div class="feature-icon anim-float" style="animation-delay:1.5s">
+          <i class="fa-solid fa-rotate"></i>
+        </div>
+        <h3 class="feature-title">Lifetime Updates</h3>
+        <p class="feature-desc">Buy once. Get every future update, fix, and new feature free, forever.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section container" aria-labelledby="audience-heading">
+    <p class="section-eyebrow">Made For You</p>
+    <h2 class="section-title" id="audience-heading">Who is this <em>for</em>?</h2>
+
+    <div class="audience-list">
+      <div class="audience-card anim-blur-in" style="animation-delay:.0s">
+        <div class="audience-icon"><i class="fa-solid fa-laptop-code"></i></div>
+        <div>
+          <h3 class="audience-title">Freelancers</h3>
+          <p class="audience-desc">Deliver client projects 3× faster and keep 100% of the margin.</p>
+        </div>
+      </div>
+      <div class="audience-card anim-blur-in" style="animation-delay:.1s">
+        <div class="audience-icon"><i class="fa-solid fa-rocket"></i></div>
+        <div>
+          <h3 class="audience-title">Startup Founders</h3>
+          <p class="audience-desc">Ship an MVP this weekend instead of burning months on boilerplate.</p>
+        </div>
+      </div>
+      <div class="audience-card anim-blur-in" style="animation-delay:.2s">
+        <div class="audience-icon"><i class="fa-solid fa-building"></i></div>
+        <div>
+          <h3 class="audience-title">Agencies</h3>
+          <p class="audience-desc">White-label every template. No watermarks, no attribution, no limits.</p>
+        </div>
+      </div>
+      <div class="audience-card anim-blur-in" style="animation-delay:.3s">
+        <div class="audience-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+        <div>
+          <h3 class="audience-title">Students</h3>
+          <p class="audience-desc">Submit real, professional-grade projects that actually impress reviewers.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section container" aria-label="Value proposition">
+    <div class="upside-banner anim-blur-in">
+      <p class="upside-eyebrow">Your Upside</p>
+      <h2 class="upside-title">One project = <u>₹15,000+</u> earned</h2>
+      <p class="upside-desc">Use our templates to deliver client work 3× faster. Resell the same template to multiple clients — full white-label freedom, zero attribution required.</p>
+      <div class="upside-tags">
+        <span class="upside-tag">White-label</span>
+        <span class="upside-tag">Resellable</span>
+        <span class="upside-tag">No watermark</span>
+        <span class="upside-tag">Commercial use</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section container" aria-labelledby="pricing-heading">
+    <p class="section-eyebrow">Simple Pricing</p>
+    <h2 class="section-title" id="pricing-heading">Pick your <em>plan</em></h2>
+    <p class="section-subtitle">No subscriptions. No hidden fees. Pay once, own forever.</p>
+
+    <div class="pricing-list">
+      <div class="pricing-card anim-blur-in" style="animation-delay:.0s">
+        <div class="plan-header">
+          <span class="plan-name">Starter</span>
+          <span class="plan-price">₹499</span>
+        </div>
+        <p class="plan-tag">Perfect for a single project</p>
+        <ul class="plan-features">
+          <li class="plan-feature"><i class="fa-solid fa-check plan-check"></i> 1 premium template</li>
+          <li class="plan-feature"><i class="fa-solid fa-check plan-check"></i> Full source code</li>
+          <li class="plan-feature"><i class="fa-solid fa-check plan-check"></i> Lifetime updates</li>
+          <li class="plan-feature"><i class="fa-solid fa-check plan-check"></i> Community support</li>
+        </ul>
+        <a class="plan-cta plan-cta-light">Browse Templates</a>
+      </div>
+
+      <div class="pricing-card highlight anim-blur-in" style="animation-delay:.12s" aria-label="Most popular plan">
+        <span class="plan-popular-badge">★ Most Popular</span>
+        <div class="plan-header">
+          <span class="plan-name">Pro</span>
+          <span class="plan-price">₹2,499</span>
+        </div>
+        <p class="plan-tag">Most popular for freelancers</p>
+        <ul class="plan-features">
+          <li class="plan-feature"><i class="fa-solid fa-check plan-check"></i> 5 premium templates</li>
+          <li class="plan-feature"><i class="fa-solid fa-check plan-check"></i> Full commercial license</li>
+          <li class="plan-feature"><i class="fa-solid fa-check plan-check"></i> Priority Telegram support</li>
+          <li class="plan-feature"><i class="fa-solid fa-check plan-check"></i> White-label rights</li>
+          <li class="plan-feature"><i class="fa-solid fa-check plan-check"></i> Free setup assistance</li>
+        </ul>
+        <a class="plan-cta plan-cta-dark">Get Pro Bundle</a>
+      </div>
+
+      <div class="pricing-card anim-blur-in" style="animation-delay:.24s">
+        <div class="plan-header">
+          <span class="plan-name">Agency</span>
+          <span class="plan-price">₹6,999</span>
+        </div>
+        <p class="plan-tag">Unlimited client deliveries</p>
+        <ul class="plan-features">
+          <li class="plan-feature"><i class="fa-solid fa-check plan-check"></i> All current templates</li>
+          <li class="plan-feature"><i class="fa-solid fa-check plan-check"></i> Unlimited reseller license</li>
+          <li class="plan-feature"><i class="fa-solid fa-check plan-check"></i> Dedicated account manager</li>
+          <li class="plan-feature"><i class="fa-solid fa-check plan-check"></i> Early access to new drops</li>
+          <li class="plan-feature"><i class="fa-solid fa-check plan-check"></i> Custom branding service</li>
+        </ul>
+        <a class="plan-cta plan-cta-light">Talk to Sales</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section container" aria-labelledby="testimonials-heading">
+    <p class="section-eyebrow">What Devs Say</p>
+    <h2 class="section-title" id="testimonials-heading">Trusted by <em>12,000+</em> developers</h2>
+
+    <div class="testimonials-list">
+      <div class="testimonial-card anim-blur-in" style="animation-delay:.0s">
+        <div class="stars" aria-label="5 out of 5 stars">
+          <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+        </div>
+        <p class="testimonial-text">"I delivered a full e-commerce build to my client in 3 days. The setup was ready out of the box — I only had to swap the branding."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar" aria-hidden="true">AK</div>
+          <div>
+            <div class="author-name">Priya</div>
+            <div class="author-role">Freelance Developer</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card anim-blur-in" style="animation-delay:.12s">
+        <div class="stars" aria-label="5 out of 5 stars">
+          <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+        </div>
+        <p class="testimonial-text">"Our development cost dropped by 70%. The code quality is honestly better than what we were writing in-house."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar" aria-hidden="true">PM</div>
+          <div>
+            <div class="author-name">Rishab B.</div>
+            <div class="author-role">Startup Founder</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card anim-blur-in" style="animation-delay:.24s">
+        <div class="stars" aria-label="5 out of 5 stars">
+          <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+        </div>
+        <p class="testimonial-text">"Top-notch quality and the support team replies on Telegram within minutes. This is now a core part of our delivery stack."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar" aria-hidden="true">RS</div>
+          <div>
+            <div class="author-name">Shakti P.</div>
+            <div class="author-role">Agency Owner</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section container" aria-labelledby="faq-heading">
+    <p class="section-eyebrow">Got Questions?</p>
+    <h2 class="section-title" id="faq-heading">We have <em>answers</em></h2>
+
+    <div class="faq-list" id="faq">
+      <div class="faq-item open">
+        <button class="faq-trigger" onclick="toggleFaq(this)" aria-expanded="true">
+          <span class="faq-question">How do I receive the source code?</span>
+          <span class="faq-icon"><i class="fa-solid fa-plus"></i></span>
+        </button>
+        <div class="faq-body" role="region">
+          <div class="faq-body-inner">
+            <p class="faq-answer">Once your payment is verified, the download button unlocks instantly inside "Your Purchases". Most orders are ready within 2 minutes.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-trigger" onclick="toggleFaq(this)" aria-expanded="false">
+          <span class="faq-question">Can I use this for client projects?</span>
+          <span class="faq-icon"><i class="fa-solid fa-plus"></i></span>
+        </button>
+        <div class="faq-body" role="region">
+          <div class="faq-body-inner">
+            <p class="faq-answer">Yes. Every purchase includes a commercial license. Pro and Agency plans also include full white-label and reseller rights.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-trigger" onclick="toggleFaq(this)" aria-expanded="false">
+          <span class="faq-question">What if I need help with setup?</span>
+          <span class="faq-icon"><i class="fa-solid fa-plus"></i></span>
+        </button>
+        <div class="faq-body" role="region">
+          <div class="faq-body-inner">
+            <p class="faq-answer">Reach out on Telegram. A real engineer responds within 5 minutes, 24/7 — no bots, no copy-paste replies.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-trigger" onclick="toggleFaq(this)" aria-expanded="false">
+          <span class="faq-question">Do I get future updates?</span>
+          <span class="faq-icon"><i class="fa-solid fa-plus"></i></span>
+        </button>
+        <div class="faq-body" role="region">
+          <div class="faq-body-inner">
+            <p class="faq-answer">Yes. Every template comes with lifetime updates. Bug fixes, new features, and version upgrades are all included.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-trigger" onclick="toggleFaq(this)" aria-expanded="false">
+          <span class="faq-question">Is there a refund policy?</span>
+          <span class="faq-icon"><i class="fa-solid fa-plus"></i></span>
+        </button>
+        <div class="faq-body" role="region">
+          <div class="faq-body-inner">
+            <p class="faq-answer">If the code does not work as advertised and our team cannot fix it, we issue a full refund — no questions asked.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer role="contentinfo">
+    <div class="container">
+      <div class="footer-logo">SPR STORE</div>
+      <p class="footer-sub">Premium Source Code Marketplace</p>
+      <nav class="footer-links" aria-label="Footer navigation">
+        <a href="#">Products</a>
+        <a href="#">Pricing</a>
+        <a href="#">Support</a>
+        <a href="#">About</a>
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+      </nav>
+      <div class="footer-socials" aria-label="Social media links">
+        <a class="social-btn" href="t.me/Spxxr04" aria-label="Telegram"><i class="fa-brands fa-telegram"></i></a>
+        <a class="social-btn" href="#" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+        <a class="social-btn" href="https://www.instagram.com/__sprxx?igsh=eW5zc2hvaWlqY2xk" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a class="social-btn" href="#" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+      </div>
+      <p class="footer-copy">© 2026 SPR STORE. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <div class="fab-wrap">
+    <span class="fab-label" id="fab-label">Custom Order</span>
+    <a class="fab" href="t.me/Spxxr04" 
+       target="_blank" rel="noopener noreferrer" aria-label="Order on Telegram">
+      <i class="fa-brands fa-telegram"></i>
+    </a>
+  </div>
+
+  <script>
+    // ── Dark Mode Toggle ──
+    const html = document.documentElement;
+    const btn  = document.getElementById('theme-toggle');
+    const icon = document.getElementById('theme-icon');
+    const saved = localStorage.getItem('theme');
+
+    function setTheme(dark) {
+      html.classList.toggle('dark', dark);
+      icon.className = dark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+      localStorage.setItem('theme', dark ? 'dark' : 'light');
+    }
+
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme:dark)').matches)) {
+      setTheme(true);
+    }
+
+    btn.addEventListener('click', () => setTheme(!html.classList.contains('dark')));
+
+    // ── Category Chip Filter ──
+    function filterChip(el) {
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+    }
+
+    // ── FAQ Accordion ──
+    function toggleFaq(triggerBtn) {
+      const item = triggerBtn.closest('.faq-item');
+      const isOpen = item.classList.contains('open');
+      // Close all
+      document.querySelectorAll('.faq-item').forEach(i => {
+        i.classList.remove('open');
+        i.querySelector('.faq-trigger').setAttribute('aria-expanded', 'false');
+      });
+      // Open clicked (unless already open)
+      if (!isOpen) {
+        item.classList.add('open');
+        triggerBtn.setAttribute('aria-expanded', 'true');
+      }
+    }
+
+    // ── Intersection Observer for scroll animations ──
+    const animEls = document.querySelectorAll('.anim-blur-in');
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            e.target.style.animationPlayState = 'running';
+            io.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.1 });
+
+      animEls.forEach(el => {
+        el.style.animationPlayState = 'paused';
+        io.observe(el);
+      });
+    }
+
+    // ── FAB hide label after 3s ──
+    setTimeout(() => {
+      const label = document.getElementById('fab-label');
+      if (label) {
+        label.style.transition = 'opacity .5s';
+        label.style.opacity = '0';
+        setTimeout(() => label.remove(), 500);
+      }
+    }, 3000);
+
+    // ── Search input live feedback ──
+    document.getElementById('search-input').addEventListener('input', function() {
+      // Visual feedback only for static demo
+      const val = this.value.toLowerCase();
+      document.querySelectorAll('.product-card').forEach(card => {
+        const title = card.querySelector('.card-title').textContent.toLowerCase();
+        const tag = card.querySelector('.card-tag').textContent.toLowerCase();
+        const visible = !val || title.includes(val) || tag.includes(val);
+        card.style.display = visible ? '' : 'none';
+      });
+    });
+  </script>
+</body>
+</html>
